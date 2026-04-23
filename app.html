@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyZone</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <div class="logo">Study<span>Zone</span></div>
+  <div class="nav-right">
+    <span class="tier-badge" id="tier-badge">Free</span>
+    <img class="avatar" id="user-avatar" src="" alt="avatar" style="display:none"/>
+    <span class="user-name" id="user-name"></span>
+    <button class="btn-upgrade" id="upgrade-btn" onclick="showUpgradeModal()">Upgrade ✦</button>
+    <button class="btn-signout" onclick="signOut()">Sign out</button>
+  </div>
+</nav>
+
+<!-- Main nav -->
+<div class="main-nav">
+  <button class="nav-btn active" onclick="showSection('ai', this)">AI Tutor</button>
+  <button class="nav-btn" onclick="showSection('tools', this)">Tools</button>
+  <button class="nav-btn" onclick="showSection('timer', this)">Timer</button>
+  <button class="nav-btn" onclick="showSection('fun', this)">Just for Fun</button>
+</div>
+
+<div class="app-body">
+
+  <!-- AI TUTOR -->
+  <div id="sec-ai" class="section visible">
+    <div class="section-head">Ask your AI tutor anything</div>
+    <div class="usage-bar-wrap">
+      <div class="usage-text" id="usage-text">Loading...</div>
+      <div class="usage-bar"><div class="usage-fill" id="usage-fill"></div></div>
+    </div>
+    <div class="ai-box">
+      <div class="ai-label">Quick prompts</div>
+      <div class="ai-chips">
+        <button class="chip" onclick="setPrompt('Explain photosynthesis simply')">Explain photosynthesis</button>
+        <button class="chip" onclick="setPrompt('Help me understand the Pythagorean theorem')">Pythagorean theorem</button>
+        <button class="chip" onclick="setPrompt('What caused World War 1?')">WW1 causes</button>
+        <button class="chip" onclick="setPrompt('Give me 5 tips for better studying')">Study tips</button>
+        <button class="chip" onclick="setPrompt('Help me write an essay introduction about climate change')">Essay intro</button>
+      </div>
+      <textarea id="ai-input" class="ai-textarea" placeholder="Ask anything — math, history, science, languages..."></textarea>
+      <div class="ai-actions">
+        <button class="btn-ask" onclick="askAI()">Ask ↗</button>
+        <button class="btn-clear" onclick="clearAI()">Clear</button>
+      </div>
+      <div id="ai-response" class="ai-response" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div id="sec-tools" class="section">
+    <div class="section-head">Handy tools</div>
+
+    <div class="tool-area">
+      <div class="tool-title">Grade calculator</div>
+      <div class="tool-row">
+        <input id="g-score" type="number" class="tool-input-small" placeholder="Score"/>
+        <input id="g-max" type="number" class="tool-input-small" placeholder="Max"/>
+        <button class="btn-tool" onclick="calcGrade()">Calculate</button>
+        <span id="grade-result" class="grade-result"></span>
+      </div>
+    </div>
+
+    <div class="tool-area">
+      <div class="tool-title">Word counter</div>
+      <textarea class="tool-textarea" id="wc-input" placeholder="Paste your text here..." oninput="countWords()"></textarea>
+      <div id="wc-result" class="tool-result-small"></div>
+    </div>
+
+    <div class="tool-area">
+      <div class="tool-title">AI essay feedback <span class="pro-tag">Pro</span></div>
+      <div class="tool-row">
+        <textarea class="tool-textarea" id="essay-input" placeholder="Paste a paragraph or essay intro..."></textarea>
+        <button class="btn-tool" onclick="getEssayFeedback()">Get feedback</button>
+      </div>
+      <div id="essay-out" class="tool-out"></div>
+    </div>
+
+    <div class="tool-area">
+      <div class="tool-title">Flashcard maker <span class="pro-tag">Pro</span></div>
+      <div class="tool-row">
+        <textarea class="tool-textarea" id="flash-input" placeholder="Paste notes or a topic..."></textarea>
+        <button class="btn-tool" onclick="makeFlashcards()">Make cards</button>
+      </div>
+      <div id="flash-out" class="tool-out"></div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div id="sec-timer" class="section">
+    <div class="section-head">Focus timer</div>
+    <div class="timer-wrap">
+      <div id="timer-display" class="timer-display">25:00</div>
+      <div class="timer-label" id="timer-label">pomodoro — 25 min focus</div>
+      <div class="timer-controls">
+        <button class="btn-timer" onclick="setTimer(25*60,'pomodoro — 25 min focus')">25 min</button>
+        <button class="btn-timer" onclick="setTimer(10*60,'short session — 10 min')">10 min</button>
+        <button class="btn-timer" onclick="setTimer(5*60,'break time — 5 min')">5 min break</button>
+        <button class="btn-timer primary" id="start-btn" onclick="toggleTimer()">Start</button>
+        <button class="btn-timer" onclick="resetTimer()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUN -->
+  <div id="sec-fun" class="section">
+    <div class="section-head">Just for fun</div>
+    <div class="fun-area">
+      <button class="btn-tool" onclick="getJoke()">Get a school joke</button>
+      <div id="joke-box" class="fun-box"></div>
+      <button class="btn-tool" style="margin-top:8px" onclick="getMotivation()">Motivate me</button>
+      <div id="motivation-box" class="fun-box"></div>
+    </div>
+    <div style="margin-top:1.5rem">
+      <div class="tool-title" style="margin-bottom:10px">Achievements</div>
+      <div class="badge-grid">
+        <div class="badge"><div class="badge-icon">🤖</div><div class="badge-name">First AI ask</div></div>
+        <div class="badge"><div class="badge-icon">⏱</div><div class="badge-name">Focus master</div></div>
+        <div class="badge"><div class="badge-icon">✏️</div><div class="badge-name">Essay writer</div></div>
+        <div class="badge"><div class="badge-icon">🃏</div><div class="badge-name">Card maker</div></div>
+        <div class="badge"><div class="badge-icon">😂</div><div class="badge-name">Joke fan</div></div>
+        <div class="badge"><div class="badge-icon">⭐</div><div class="badge-name">Top student</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- UPGRADE MODAL -->
+<div id="upgrade-modal" class="modal-overlay" style="display:none" onclick="closeModalOutside(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
+    <div class="modal-title">Upgrade StudyZone</div>
+    <p class="modal-sub">Unlock more AI messages and premium tools</p>
+
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">€0</div>
+        <ul class="plan-features">
+          <li>✓ Google login</li>
+          <li>✓ 50 AI messages total</li>
+          <li>✓ Grade calculator</li>
+          <li>✓ Word counter</li>
+          <li>✗ Essay feedback</li>
+          <li>✗ Flashcard maker</li>
+        </ul>
+        <div class="plan-current">Current plan</div>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-badge">One-time</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">€4.99 <span>once</span></div>
+        <ul class="plan-features">
+          <li>✓ 100 AI messages total</li>
+          <li>✓ Essay AI feedback</li>
+          <li>✓ Flashcard maker</li>
+          <li>✓ All tools</li>
+          <li>✗ Unlimited AI</li>
+        </ul>
+        <a href="https://ko-fi.com/YOUR_KOFI_USERNAME/shop" target="_blank" class="btn-plan">Buy once on Ko-fi →</a>
+      </div>
+
+      <div class="plan-card featured-sub">
+        <div class="plan-badge sub">Monthly</div>
+        <div class="plan-name">Student+</div>
+        <div class="plan-price">€1.99 <span>/mo</span></div>
+        <ul class="plan-features">
+          <li>✓ Unlimited AI messages</li>
+          <li>✓ All Pro features</li>
+          <li>✓ Priority support</li>
+          <li>✓ New features first</li>
+        </ul>
+        <a href="https://ko-fi.com/YOUR_KOFI_USERNAME/membership" target="_blank" class="btn-plan sub">Subscribe on Ko-fi →</a>
+      </div>
+    </div>
+
+    <p class="modal-note">After paying on Ko-fi, send your order confirmation email to <strong>YOUR_EMAIL@here.com</strong> and I'll upgrade your account within 24h.</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
