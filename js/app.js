@@ -78,9 +78,7 @@ async function callAI(prompt, system) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [
-            { role: 'user', parts: [{ text: (system || 'You are a helpful school tutor. Be clear and friendly. Use plain text only, no markdown.') + '
-
-' + prompt }] }
+            { role: 'user', parts: [{ text: (system || 'You are a helpful school tutor. Be clear and friendly. Use plain text only, no markdown.') + '\n\n' + prompt }] }
           ]
         })
       }
