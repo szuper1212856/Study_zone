@@ -1,6 +1,6 @@
 // app.js — main app logic
 
-const GEMINI_API_KEY = 'AIzaSyBsGM5PIY4xOd1n3jrRnMHIxuPuANbYA-E';
+const GEMINI_API_KEY = 'AIzaSyCybeIdsWP4QVYB6WA_5QHSZwUoCSODznc';
 
 const LIMITS = { free: 50, pro: 100, student_plus: Infinity };
 
