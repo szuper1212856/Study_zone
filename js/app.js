@@ -4,7 +4,7 @@
 //  PASTE YOUR GEMINI API KEY BELOW (between the quotes)
 //  Get one free at: https://aistudio.google.com
 // ============================================================
-const GEMINI_API_KEY = 'AIzaSyCybeIdsWP4QVYB6WA_5QHSZwUoCSODznc';
+const GEMINI_API_KEY = 'AIzaSyD2lNabZk7Cfal47ykkABFbCuRdUMevdrk';
 
 const LIMITS = { free: 50, pro: 100, student_plus: Infinity };
 
