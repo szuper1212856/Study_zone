@@ -1,5 +1,5 @@
 // app.js — main app logic
-// API key is safely stored in Netlify environment variables, NOT here
+const GEMINI_API_KEY = 'AIzaSyCybeIdsWP4QVYB6WA_5QHSZwUoCSODznc';
 
 const LIMITS = { free: 50, pro: 100, student_plus: Infinity };
 
