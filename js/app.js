@@ -71,21 +71,23 @@ function updateUsageBar() {
 // ============================================================
 async function callAI(prompt, system) {
   try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [
-            { role: 'user', parts: [{ text: (system || 'You are a helpful school tutor. Be clear and friendly. Use plain text only, no markdown.') + '\n\n' + prompt }] }
-          ]
-        })
-      }
-    );
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GEMINI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.2-3b-instruct:free',
+        messages: [
+          { role: 'system', content: system || 'You are a helpful school tutor. Be clear and friendly. Use plain text only, no markdown, no asterisks.' },
+          { role: 'user', content: prompt }
+        ]
+      })
+    });
     const data = await res.json();
     if (data.error) return 'Error: ' + data.error.message;
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response received. Try again.';
+    return data.choices?.[0]?.message?.content || 'No response received. Try again.';
   } catch (e) {
     return 'Network error. Check your connection and try again.';
   }
