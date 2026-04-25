@@ -71,28 +71,18 @@ function updateUsageBar() {
 // ============================================================
 async function callAI(prompt, system) {
   try {
-    const res = await fetch('https://studyzone.szuper1414.workers.dev/', {
+    const res = await fetch('https://studyzone.szuper1414.workers.dev', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GEMINI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-3.2-3b-instruct:free',
-        messages: [
-          { role: 'system', content: system || 'You are a helpful school tutor. Be clear and friendly. Use plain text only, no markdown, no asterisks.' },
-          { role: 'user', content: prompt }
-        ]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, system })
     });
     const data = await res.json();
     if (data.error) return 'Error: ' + data.error.message;
-    return data.choices?.[0]?.message?.content || 'No response received. Try again.';
+    return data.text || 'No response received. Try again.';
   } catch (e) {
     return 'Network error. Check your connection and try again.';
   }
 }
-
 async function checkAndIncrementUsage() {
   const limit = LIMITS[userData.tier];
   const used = userData.aiUsed || 0;
